@@ -13,4 +13,4 @@ RUN ln -s /usr/local/google-cloud-sdk/bin/gcloud /usr/local/bin/ && \
     gcloud config set core/disable_usage_reporting true --installation && \
     gcloud config set component_manager/disable_update_check true --installation && \
     gcloud config set metrics/environment github_docker_image --installation
-
+RUN gcloud components install kubectl
