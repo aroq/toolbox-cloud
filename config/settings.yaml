@@ -1,5 +1,5 @@
 config:
-  tools:
+  libraries:
     gcp:
       params:
         source: github.com/aroq/toolbox-gcp
