@@ -10,4 +10,4 @@ config:
             cmd: gcloud/gcloud
 tools:
   gcloud:
-    from: config.tools.gcp.commands.gcloud
+    from: config.libraries.gcp.commands.gcloud
