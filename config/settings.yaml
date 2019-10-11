@@ -1,0 +1,13 @@
+config:
+  tools:
+    gcp:
+      params:
+        source: github.com/aroq/toolbox-gcp
+        image: aroq/toolbox-gcp
+      commands:
+        gcloud:
+          params:
+            cmd: gcloud/gcloud
+tools:
+  gcloud:
+    from: config.tools.gcp.commands.gcloud

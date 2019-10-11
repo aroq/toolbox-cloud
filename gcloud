@@ -1,0 +1,75 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+# bindParamsFromEnv: true
+autoenv: true
+
+parameters:
+- name: CLOUDSDK_CORE_PROJECT
+  type: string
+
+- name: CLOUDSDK_COMPUTE_ZONE
+  type: string
+
+- name: CLOUDSDK_CONTAINER_CLUSTER
+  type: string
+
+- name: key_file
+  type: string
+
+steps:
+- task: setup
+- script: |
+    gcloud {{ .args | join " " }}
+
+tasks:
+  gpg:
+    bindParamsFromEnv: true
+    parameters:
+    - name: TOOLBOX_GPG_KEY_FILE_PATH
+      type: string
+    tasks:
+      import_key:
+        steps:
+        - script: gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
+
+  git-secret:
+    parameters:
+    - name: secret_file
+      type: string
+    tasks:
+      hide:
+        steps:
+        - script: git secret hide {{ .secret_file }}
+      reveal:
+        steps:
+        - script: git secret reveal -f {{ .secret_file }}
+      delete:
+        steps:
+        - script: rm {{ .secret_file }}
+
+  setup:
+    steps:
+    - task: gpg.import_key
+    - task: git-secret.reveal
+      arguments:
+        secret_file: "{{ .key_file }}"
+    - task: setup.sa
+    - task: git-secret.delete
+      arguments:
+        secret_file: "{{ .key_file }}"
+    tasks:
+      sa:
+        # bindParamsFromEnv: true
+        autoenv: true
+        steps:
+        - script: |
+            gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
+            gcloud auth activate-service-account --key-file={{ .key_file }}
+
+      get-credentials:
+        # bindParamsFromEnv: true
+        autoenv: true
+        steps:
+        - script: |
+            gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
