@@ -2,6 +2,7 @@ config:
   libraries:
     gcp:
       params:
+        name: gcp
         source: github.com/aroq/toolbox-gcp
         image: aroq/toolbox-gcp
       commands:
