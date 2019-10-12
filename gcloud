@@ -1,6 +1,8 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
+import: .toolbox/core/variant-lib/utils.yaml
+
 # bindParamsFromEnv: true
 autoenv: true
 
@@ -19,8 +21,10 @@ parameters:
 
 steps:
 - task: setup
-- script: |
-    gcloud {{ .args | join " " }}
+- task: exec
+  arguments:
+    cmd: |
+      gcloud {{ .args | join " " }}
 
 tasks:
   gpg:
@@ -31,7 +35,10 @@ tasks:
     tasks:
       import_key:
         steps:
-        - script: gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
+        - task: exec
+          arguments:
+            cmd: |
+              gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
 
   git-secret:
     parameters:
@@ -40,13 +47,22 @@ tasks:
     tasks:
       hide:
         steps:
-        - script: git secret hide {{ .secret_file }}
+        - task: exec
+          arguments:
+            cmd: |
+              git secret hide {{ .secret_file }}
       reveal:
         steps:
-        - script: git secret reveal -f {{ .secret_file }}
+        - task: exec
+          arguments:
+            cmd: |
+              git secret reveal -f {{ .secret_file }}
       delete:
         steps:
-        - script: rm {{ .secret_file }}
+        - task: exec
+          arguments:
+            cmd: |
+              rm {{ .secret_file }}
 
   setup:
     steps:
@@ -60,16 +76,19 @@ tasks:
         secret_file: "{{ .key_file }}"
     tasks:
       sa:
-        # bindParamsFromEnv: true
         autoenv: true
         steps:
-        - script: |
-            gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
-            gcloud auth activate-service-account --key-file={{ .key_file }}
+        - task: exec
+          arguments:
+            cmd: |
+              gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
+              gcloud auth activate-service-account --key-file={{ .key_file }}
 
       get-credentials:
-        # bindParamsFromEnv: true
         autoenv: true
         steps:
-        - script: |
-            gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
+        - task: exec
+          arguments:
+            cmd: |
+              gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
+
