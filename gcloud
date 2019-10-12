@@ -37,6 +37,7 @@ tasks:
         steps:
         - task: exec
           arguments:
+            title: GPG :: Import key
             cmd: |
               gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
 
@@ -49,18 +50,21 @@ tasks:
         steps:
         - task: exec
           arguments:
+            title: Git secret :: Hide secret
             cmd: |
               git secret hide {{ .secret_file }}
       reveal:
         steps:
         - task: exec
           arguments:
+            title: Git secret :: Reveal secret
             cmd: |
               git secret reveal -f {{ .secret_file }}
       delete:
         steps:
         - task: exec
           arguments:
+            title: Git secret :: Remove secret file
             cmd: |
               rm {{ .secret_file }}
 
@@ -80,6 +84,7 @@ tasks:
         steps:
         - task: exec
           arguments:
+            title: Google Cloud :: Set project & activate service account
             cmd: |
               gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
               gcloud auth activate-service-account --key-file={{ .key_file }}
@@ -89,6 +94,7 @@ tasks:
         steps:
         - task: exec
           arguments:
+            title: Google Cloud :: Cluster :: Get credentials
             cmd: |
               gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
 
