@@ -8,7 +8,7 @@ config:
       commands:
         gcloud:
           params:
-            cmd: gcloud/gcloud
+            cmd: gcp/gcloud
 tools:
   gcloud:
     from: config.libraries.gcp.commands.gcloud
