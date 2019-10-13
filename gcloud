@@ -20,11 +20,12 @@ parameters:
   type: string
 
 steps:
-- task: setup
+- task: before
 - task: exec
   arguments:
     cmd: |
       gcloud {{ .args | join " " }}
+- task: after
 
 tasks:
   gpg:
@@ -68,33 +69,34 @@ tasks:
             cmd: |
               rm {{ .secret_file }}
 
-  setup:
+  before:
     steps:
     - task: gpg.import_key
     - task: git-secret.reveal
       arguments:
         secret_file: "{{ .key_file }}"
-    - task: setup.sa
+    - task: activate-service-account
+  after:
+    steps:
     - task: git-secret.delete
       arguments:
         secret_file: "{{ .key_file }}"
-    tasks:
-      sa:
-        autoenv: true
-        steps:
-        - task: exec
-          arguments:
-            title: "Google Cloud :: Set project & activate service account"
-            cmd: |
-              gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
-              gcloud auth activate-service-account --key-file={{ .key_file }}
 
-      get-credentials:
-        autoenv: true
-        steps:
-        - task: exec
-          arguments:
-            title: "Google Cloud :: Cluster :: Get credentials"
-            cmd: |
-              gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
+  activate-service-account:
+    autoenv: true
+    steps:
+    - task: exec
+      arguments:
+        title: "Google Cloud :: Set project & activate service account"
+        cmd: |
+          gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
+          gcloud auth activate-service-account --key-file={{ .key_file }}
 
+  get-credentials:
+    autoenv: true
+    steps:
+    - task: exec
+      arguments:
+        title: "Google Cloud :: Cluster :: Get credentials"
+        cmd: |
+          gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
