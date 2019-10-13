@@ -28,47 +28,6 @@ steps:
 - task: after
 
 tasks:
-  gpg:
-    bindParamsFromEnv: true
-    parameters:
-    - name: TOOLBOX_GPG_KEY_FILE_PATH
-      type: string
-    tasks:
-      import_key:
-        steps:
-        - task: exec
-          arguments:
-            title: "GPG :: Import key"
-            cmd: |
-              gpg --batch --import {{ .TOOLBOX_GPG_KEY_FILE_PATH }}
-
-  git-secret:
-    parameters:
-    - name: secret_file
-      type: string
-    tasks:
-      hide:
-        steps:
-        - task: exec
-          arguments:
-            title: "Git secret :: Hide secret"
-            cmd: |
-              git secret hide {{ .secret_file }}
-      reveal:
-        steps:
-        - task: exec
-          arguments:
-            title: "Git secret :: Reveal secret"
-            cmd: |
-              git secret reveal -f {{ .secret_file }}
-      delete:
-        steps:
-        - task: exec
-          arguments:
-            title: "Git secret :: Remove secret file"
-            cmd: |
-              rm {{ .secret_file }}
-
   before:
     steps:
     - task: gpg.import_key
@@ -76,6 +35,7 @@ tasks:
       arguments:
         secret_file: "{{ .key_file }}"
     - task: activate-service-account
+
   after:
     steps:
     - task: git-secret.delete
