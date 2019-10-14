@@ -1,14 +1,14 @@
 config:
   libraries:
-    gcp:
+    cloud:
       params:
-        destination: gcp
-        source: github.com/aroq/toolbox-gcp
-        image: aroq/toolbox-gcp
+        destination: cloud
+        source: github.com/aroq/toolbox-cloud
+        image: aroq/toolbox-cloud
       commands:
         gcloud:
           params:
-            cmd: gcp/gcloud
+            cmd: cloud/gcloud
 tools:
   gcloud:
-    from: config.libraries.gcp.commands.gcloud
+    from: config.libraries.cloud.commands.gcloud
