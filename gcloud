@@ -1,7 +1,7 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
-import: .toolbox/tools/toolbox-cloud/variant-lib/utils.yaml
+import: .toolbox/tools/cloud/variant-lib/utils.yaml
 
 # bindParamsFromEnv: true
 autoenv: true
