@@ -1,7 +1,7 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
-import: .toolbox/core/variant-lib/utils.yaml
+import: .toolbox/tools/toolbox-cloud/variant-lib/utils.yaml
 
 # bindParamsFromEnv: true
 autoenv: true
@@ -30,6 +30,7 @@ steps:
 tasks:
   before:
     steps:
+    - task: chamber
     - task: gpg.import_key
     - task: git-secret.reveal
       arguments:
