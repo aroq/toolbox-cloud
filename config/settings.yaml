@@ -9,6 +9,16 @@ config:
         gcloud:
           params:
             cmd: cloud/gcloud
+        chamber:
+          params:
+            cmd: cloud/chamber
+        terraform:
+          params:
+            cmd: cloud/terraform
 tools:
   gcloud:
     from: config.libraries.cloud.commands.gcloud
+  chamber:
+    from: config.libraries.cloud.commands.chamber
+  terraform:
+    from: config.libraries.cloud.commands.terraform
