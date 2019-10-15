@@ -1,0 +1,60 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+import: .toolbox/core/variant-lib/utils.yaml
+
+bindParamsFromEnv: true
+autoenv: true
+
+parameters:
+- name: AWS_ACCESS_KEY_ID
+  type: string
+- name: AWS_SECRET_ACCESS_KEY
+  type: string
+- name: AWS_DEFAULT_REGION
+  type: string
+- name: AWS_SESSION_TOKEN
+  type: string
+  default: ""
+- name: AWS_SECURITY_TOKEN
+  type: string
+  default: ""
+- name: TOOLBOX_TERRAFORM_DIR
+  type: string
+
+tasks:
+  initialize:
+    autoenv: true
+    steps:
+    - task: exec
+      arguments:
+        cmd: |
+          cd {{ .TOOLBOX_TERRAFORM_DIR }}
+          echo "yes" | TF_INPUT="true" terraform init
+  plan:
+    autoenv: true
+    steps:
+    - task: initialize
+    - task: exec
+      arguments:
+        cmd: |
+          cd {{ .TOOLBOX_TERRAFORM_DIR }}
+          terraform plan
+  apply:
+    autoenv: true
+    steps:
+    - task: exec
+      arguments:
+        cmd: |
+          cd {{ .TOOLBOX_TERRAFORM_DIR }}
+          terraform apply -input=false -auto-approve
+  output:
+    parameters:
+    - name: output_name
+      type: string
+    autoenv: true
+    steps:
+    - task: exec
+      arguments:
+        cmd: |
+          terraform output {{ .output_name }}

@@ -1,0 +1,53 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+import: .toolbox/core/variant-lib/utils.yaml
+
+bindParamsFromEnv: true
+autoenv: true
+
+parameters:
+- name: AWS_ACCESS_KEY_ID
+  type: string
+- name: AWS_SECRET_ACCESS_KEY
+  type: string
+- name: AWS_DEFAULT_REGION
+  type: string
+- name: AWS_SESSION_TOKEN
+  type: string
+  default: ""
+- name: AWS_SECURITY_TOKEN
+  type: string
+  default: ""
+
+steps:
+- script: |
+    chamber {{ .args | join " " }}
+
+tasks:
+  read:
+    autoenv: true
+    bindParamsFromEnv: true
+    parameters:
+    - name: service
+      type: string
+    - name: key
+      type: string
+    steps:
+    - task: exec
+      arguments:
+        cmd: |
+          chamber read {{ .service }} {{ .key }}
+    tasks:
+      to_file:
+        autoenv: true
+        bindParamsFromEnv: true
+        parameters:
+        - name: filename
+          type: string
+        steps:
+        - task: exec
+          arguments:
+            cmd: |
+              chamber read {{ .service }} {{ .key }} -q > {{ .filename }}
+
