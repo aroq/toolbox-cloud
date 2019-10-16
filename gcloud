@@ -1,8 +1,6 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
-import: .toolbox/tools/cloud/variant-lib/utils.yaml
-
 # bindParamsFromEnv: true
 autoenv: true
 
@@ -28,9 +26,20 @@ steps:
 - task: after
 
 tasks:
+  core:
+    import: .toolbox/core/variant-lib/utils.yaml
+  cloud:
+    tasks:
+      aws:
+        import: .toolbox/tools/cloud/variant-lib/utils.aws.yaml
   before:
     steps:
-    - task: chamber
+    - task: cloud.aws.chamber.read_to_file
+      arguments:
+        service: toolbox/gpg
+        key: private_gpg_key_zebra
+        dir_name: /root/.secrets
+        file_name: key.gpg
     - task: gpg.import_key
     - task: git-secret.reveal
       arguments:
