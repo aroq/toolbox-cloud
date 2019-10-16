@@ -32,11 +32,6 @@ tasks:
   before:
     steps:
     - task: cloud.aws.chamber.read.to_file
-      arguments:
-        service: toolbox/gpg
-        key: private_gpg_key_zebra
-        dir_name: /root/.secrets
-        file_name: key.gpg
     - task: core.gpg.import_key
     - task: core.git-secret.reveal
       arguments:
@@ -70,4 +65,5 @@ tasks:
         title: "Google Cloud :: Cluster :: Get credentials"
         cmd: |
           gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
+
 
