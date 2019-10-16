@@ -11,9 +11,6 @@ parameters:
 - name: CLOUDSDK_COMPUTE_ZONE
   type: string
 
-- name: CLOUDSDK_CONTAINER_CLUSTER
-  type: string
-
 - name: key_file
   type: string
 
@@ -63,6 +60,9 @@ tasks:
           gcloud auth activate-service-account --key-file={{ .key_file }}
 
   get-credentials:
+    parameters:
+    - name: CLOUDSDK_CONTAINER_CLUSTER
+      type: string
     autoenv: true
     steps:
     - task: exec
@@ -70,3 +70,4 @@ tasks:
         title: "Google Cloud :: Cluster :: Get credentials"
         cmd: |
           gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
+
