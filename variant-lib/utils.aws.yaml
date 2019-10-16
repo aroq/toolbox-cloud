@@ -1,0 +1,58 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+bindParamsFromEnv: true
+autoenv: true
+
+parameters:
+- name: AWS_ACCESS_KEY_ID
+  type: string
+- name: AWS_SECRET_ACCESS_KEY
+  type: string
+- name: AWS_DEFAULT_REGION
+  type: string
+- name: AWS_SESSION_TOKEN
+  type: string
+  default: ""
+- name: AWS_SECURITY_TOKEN
+  type: string
+  default: ""
+
+tasks:
+  chamber:
+    bindParamsFromEnv: true
+    autoenv: true
+    steps:
+    - script: |
+        chamber {{ .args | join " " }}
+    tasks:
+      read:
+        autoenv: true
+        bindParamsFromEnv: true
+        parameters:
+        - name: service
+          type: string
+        - name: key
+          type: string
+        steps:
+        - task: core.exec
+          arguments:
+            cmd: |
+              chamber read {{ .service }} {{ .key }}
+        tasks:
+          to_file:
+            autoenv: true
+            bindParamsFromEnv: true
+            parameters:
+            - name: dir_name
+              type: string
+            - name: file_name
+              type: string
+            steps:
+            - task: core.exec
+              arguments:
+                cmd: |
+                  mkdir -p {{ .dir_name }}
+                  chamber read {{ .service }} {{ .key }} -q > {{ .dir_name }}/{{ .file_name}}
+
+
