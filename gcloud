@@ -16,7 +16,7 @@ parameters:
 
 steps:
 - task: before
-- task: exec
+- task: core.exec
   arguments:
     cmd: |
       gcloud {{ .args | join " " }}
