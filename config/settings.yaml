@@ -33,6 +33,7 @@ tools:
   gcloud:
     from:
     - config.libraries.cloud.commands.gcloud
+    - config.profiles.aws
   chamber:
     from:
     - config.libraries.cloud.commands.chamber
