@@ -9,7 +9,6 @@ config:
         gcloud:
           params:
             cmd: cloud/gcloud
-
         chamber:
           params:
             cmd: cloud/chamber

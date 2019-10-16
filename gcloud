@@ -2,14 +2,14 @@
 # vi: ft=yaml
 
 # bindParamsFromEnv: true
-autoenv: true
+# autoenv: true
 
 parameters:
-- name: CLOUDSDK_CORE_PROJECT
-  type: string
+# - name: CLOUDSDK_CORE_PROJECT
+  # type: string
 
-- name: CLOUDSDK_COMPUTE_ZONE
-  type: string
+# - name: CLOUDSDK_COMPUTE_ZONE
+  # type: string
 
 - name: key_file
   type: string
@@ -29,6 +29,8 @@ tasks:
     tasks:
       aws:
         import: .toolbox/tools/cloud/variant-lib/utils.aws.yaml
+      gcp:
+        import: .toolbox/tools/cloud/variant-lib/utils.gcp.yaml
   before:
     steps:
     - task: cloud.aws.chamber.read.to_file
@@ -36,34 +38,10 @@ tasks:
     - task: core.git-secret.reveal
       arguments:
         secret_file: "{{ .key_file }}"
-    - task: activate-service-account
+    - task: cloud.gcp.activate-service-account
 
   after:
     steps:
     - task: core.git-secret.delete
       arguments:
         secret_file: "{{ .key_file }}"
-
-  activate-service-account:
-    autoenv: true
-    steps:
-    - task: core.exec
-      arguments:
-        title: "Google Cloud :: Set project & activate service account"
-        cmd: |
-          gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
-          gcloud auth activate-service-account --key-file={{ .key_file }}
-
-  get-credentials:
-    parameters:
-    - name: CLOUDSDK_CONTAINER_CLUSTER
-      type: string
-    autoenv: true
-    steps:
-    - task: core.exec
-      arguments:
-        title: "Google Cloud :: Cluster :: Get credentials"
-        cmd: |
-          gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
-
-
