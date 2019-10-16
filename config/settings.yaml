@@ -9,16 +9,33 @@ config:
         gcloud:
           params:
             cmd: cloud/gcloud
+
         chamber:
           params:
             cmd: cloud/chamber
         terraform:
           params:
             cmd: cloud/terraform
+
+  profiles:
+    aws:
+      params:
+        env:
+          AWS_ACCESS_KEY_ID:
+          AWS_SECRET_ACCESS_KEY:
+          AWS_DEFAULT_REGION:
+          AWS_SESSION_TOKEN:
+          AWS_SECURITY_TOKEN:
+        variant_config_context:
+        - aws
+
 tools:
   gcloud:
-    from: config.libraries.cloud.commands.gcloud
+    from:
+    - config.libraries.cloud.commands.gcloud
   chamber:
-    from: config.libraries.cloud.commands.chamber
+    from:
+    - config.libraries.cloud.commands.chamber
+    - config.profiles.aws
   terraform:
     from: config.libraries.cloud.commands.terraform
