@@ -31,28 +31,28 @@ tasks:
         import: .toolbox/tools/cloud/variant-lib/utils.aws.yaml
   before:
     steps:
-    - task: cloud.aws.chamber.read_to_file
+    - task: cloud.aws.chamber.read.to_file
       arguments:
         service: toolbox/gpg
         key: private_gpg_key_zebra
         dir_name: /root/.secrets
         file_name: key.gpg
-    - task: gpg.import_key
-    - task: git-secret.reveal
+    - task: core.gpg.import_key
+    - task: core.git-secret.reveal
       arguments:
         secret_file: "{{ .key_file }}"
     - task: activate-service-account
 
   after:
     steps:
-    - task: git-secret.delete
+    - task: core.git-secret.delete
       arguments:
         secret_file: "{{ .key_file }}"
 
   activate-service-account:
     autoenv: true
     steps:
-    - task: exec
+    - task: core.exec
       arguments:
         title: "Google Cloud :: Set project & activate service account"
         cmd: |
@@ -65,7 +65,7 @@ tasks:
       type: string
     autoenv: true
     steps:
-    - task: exec
+    - task: core.exec
       arguments:
         title: "Google Cloud :: Cluster :: Get credentials"
         cmd: |
