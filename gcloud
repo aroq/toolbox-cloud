@@ -22,18 +22,18 @@ tasks:
         import: .toolbox/tools/cloud/variant-lib/utils.aws.yaml
       gcp:
         import: .toolbox/tools/cloud/variant-lib/utils.gcp.yaml
-  before:
-    steps:
-    - task: cloud.aws.chamber.read.to_file
-    - task: core.gpg.import_key
-    - task: core.git-secret.reveal
-      arguments:
-        secret_file: "{{ .key_file }}"
-    - task: cloud.gcp.activate-service-account
+  # before:
+    # steps:
+    # - task: cloud.aws.chamber.read.to_file
+    # - task: core.gpg.import_key
+    # - task: core.git-secret.reveal
+      # arguments:
+        # secret_file: "{{ .key_file }}"
+    # - task: cloud.gcp.activate-service-account
 
-  after:
-    steps:
-    - task: core.git-secret.delete
-      arguments:
-        secret_file: "{{ .key_file }}"
+  # after:
+    # steps:
+    # - task: core.git-secret.delete
+      # arguments:
+        # secret_file: "{{ .key_file }}"
 
