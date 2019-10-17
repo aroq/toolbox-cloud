@@ -28,7 +28,7 @@ config:
         - aws
 
 tools:
-  gcloud/gcloud:
+  gcloud/default:
     from:
     - config.libraries.cloud.commands.gcloud
     - config.profiles.aws
