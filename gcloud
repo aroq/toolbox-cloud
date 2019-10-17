@@ -6,12 +6,12 @@ parameters:
   type: string
 
 steps:
-- task: before
+- task: gcloud_before
 - task: core.exec
   arguments:
     cmd: |
       gcloud {{ .args | join " " }}
-- task: after
+- task: gcloud_after
 
 tasks:
   core:
