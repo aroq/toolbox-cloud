@@ -1,16 +1,7 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
-# bindParamsFromEnv: true
-# autoenv: true
-
 parameters:
-# - name: CLOUDSDK_CORE_PROJECT
-  # type: string
-
-# - name: CLOUDSDK_COMPUTE_ZONE
-  # type: string
-
 - name: key_file
   type: string
 
@@ -45,3 +36,4 @@ tasks:
     - task: core.git-secret.delete
       arguments:
         secret_file: "{{ .key_file }}"
+
