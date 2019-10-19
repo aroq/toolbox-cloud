@@ -26,6 +26,10 @@ config:
           AWS_SECURITY_TOKEN:
         variant_config_context:
         - aws
+      chamber:
+        params:
+          variant_config_context:
+          - aws.chamber
 
 tools:
   gcloud/default:
@@ -38,3 +42,4 @@ tools:
     - config.profiles.aws
   terraform:
     from: config.libraries.cloud.commands.terraform
+
