@@ -6,22 +6,15 @@ config:
         source: github.com/aroq/toolbox-cloud
         image: aroq/toolbox-cloud
       commands:
-        gcloud:
+        gcp:
           params:
-            cmd: cloud/gcloud
+            cmd: cloud/gcp
         chamber:
           params:
             cmd: cloud/chamber
         terraform:
           params:
             cmd: cloud/terraform
-
-  # profiles:
-    # cloud:
-      # gcp:
-        # params:
-          # variant_config_context:
-          # - gcp
 
   environments:
     dev: &env
@@ -56,16 +49,12 @@ config:
       <<: *env
 
 tools:
-  gcloud/default:
+  gcp/gcp:
     from:
-    - config.libraries.cloud.commands.gcloud
-    - config.profiles.cloud.gcp
-    - config.profiles.cloud.aws
+    - config.libraries.cloud.commands.gcp
   chamber:
     from:
     - config.libraries.cloud.commands.chamber
-    - config.profiles.cloud.gcp
-    - config.profiles.aws
   terraform:
     from: config.libraries.cloud.commands.terraform
 
