@@ -16,17 +16,20 @@ config:
           params:
             cmd: cloud/terraform
 
-  profiles:
-    cloud:
-      gcp:
-        params:
-          variant_config_context:
-          - gcp
+  # profiles:
+    # cloud:
+      # gcp:
+        # params:
+          # variant_config_context:
+          # - gcp
 
   environments:
     dev:
       cloud:
         gcp:
+          params:
+            variant_config_context:
+            - gcp
           clusters:
             main:
               params:
