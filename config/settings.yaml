@@ -18,6 +18,10 @@ config:
 
   profiles:
     cloud:
+      gcp:
+        params:
+          variant_config_context:
+          - gcp
       aws:
         params:
           env:
@@ -36,10 +40,12 @@ tools:
   gcloud/default:
     from:
     - config.libraries.cloud.commands.gcloud
+    - config.profiles.cloud.gcp
     - config.profiles.cloud.aws
   chamber:
     from:
     - config.libraries.cloud.commands.chamber
+    - config.profiles.cloud.gcp
     - config.profiles.aws
   terraform:
     from: config.libraries.cloud.commands.terraform
