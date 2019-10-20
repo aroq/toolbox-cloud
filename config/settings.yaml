@@ -1,6 +1,6 @@
 config:
-  cloud:
-    libraries:
+  libraries:
+    cloud:
       params:
         destination: cloud
         source: github.com/aroq/toolbox-cloud
@@ -16,7 +16,8 @@ config:
           params:
             cmd: cloud/terraform
 
-    profiles:
+  profiles:
+    cloud:
       aws:
         params:
           env:
@@ -34,12 +35,13 @@ config:
 tools:
   gcloud/default:
     from:
-    - config.cloud.libraries.commands.gcloud
-    - config.cloud.profiles.aws
+    - config.libraries.cloud.commands.gcloud
+    - config.profiles.cloud.aws
   chamber:
     from:
-    - config.cloud.libraries.commands.chamber
+    - config.libraries.cloud.commands.chamber
     - config.profiles.aws
   terraform:
-    from: config.cloud.libraries.commands.terraform
+    from: config.libraries.cloud.commands.terraform
+
 
