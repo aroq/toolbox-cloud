@@ -22,15 +22,33 @@ config:
         params:
           variant_config_context:
           - gcp
-        clusters:
-          main:
+        environments:
+          dev:
             params:
               variant_config_context:
-              - main
-          secondary:
+              - dev
+            clusters:
+              main:
+                params:
+                  variant_config_context:
+                  - main
+              secondary:
+                params:
+                  variant_config_context:
+                  - secondary
+          prod:
             params:
               variant_config_context:
-              - secondary
+              - dev
+            clusters:
+              main:
+                params:
+                  variant_config_context:
+                  - main
+              secondary:
+                params:
+                  variant_config_context:
+                  - secondary
 
       aws:
         params:
