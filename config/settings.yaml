@@ -1,14 +1,14 @@
 config:
-  libraries:
-    cloud:
+  cloud:
+    libraries:
       params:
         destination: cloud
         source: github.com/aroq/toolbox-cloud
         image: aroq/toolbox-cloud
       commands:
-        gcloud:
-          params:
-            cmd: cloud/gcloud
+        # gcloud:
+          # params:
+            # cmd: cloud/gcloud
         chamber:
           params:
             cmd: cloud/chamber
@@ -16,30 +16,30 @@ config:
           params:
             cmd: cloud/terraform
 
-  profiles:
-    aws:
-      params:
-        env:
-          AWS_ACCESS_KEY_ID:
-          AWS_SECRET_ACCESS_KEY:
-          AWS_SESSION_TOKEN:
-          AWS_SECURITY_TOKEN:
-        variant_config_context:
-        - aws
-      chamber:
+    profiles:
+      aws:
         params:
+          env:
+            AWS_ACCESS_KEY_ID:
+            AWS_SECRET_ACCESS_KEY:
+            AWS_SESSION_TOKEN:
+            AWS_SECURITY_TOKEN:
           variant_config_context:
-          - aws.chamber
+          - aws
+        chamber:
+          params:
+            variant_config_context:
+            - aws.chamber
 
 tools:
   gcloud/default:
     from:
-    - config.libraries.cloud.commands.gcloud
-    - config.profiles.aws
+    - config.cloud.libraries.commands.gcloud
+    - config.cloud.profiles.aws
   chamber:
     from:
-    - config.libraries.cloud.commands.chamber
+    - config.cloud.libraries.commands.chamber
     - config.profiles.aws
   terraform:
-    from: config.libraries.cloud.commands.terraform
+    from: config.cloud.libraries.commands.terraform
 
