@@ -59,6 +59,16 @@ config:
             AWS_SECURITY_TOKEN:
           variant_config_context:
           - aws
+        environments:
+          dev:
+            params:
+              variant_config_context:
+              - dev
+        environments:
+          prod:
+            params:
+              variant_config_context:
+              - prod
         chamber:
           params:
             variant_config_context:
