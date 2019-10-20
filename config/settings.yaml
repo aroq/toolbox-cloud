@@ -24,7 +24,7 @@ config:
           # - gcp
 
   environments:
-    dev:
+    dev: &env
       cloud:
         gcp:
           params:
@@ -39,7 +39,6 @@ config:
               params:
                 variant_config_context:
                 - secondary
-
         aws:
           params:
             env:
@@ -53,6 +52,8 @@ config:
             params:
               variant_config_context:
               - aws.chamber
+    prod:
+      <<: *env
 
 tools:
   gcloud/default:
