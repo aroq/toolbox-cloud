@@ -6,9 +6,9 @@ config:
         source: github.com/aroq/toolbox-cloud
         image: aroq/toolbox-cloud
       commands:
-        # gcloud:
-          # params:
-            # cmd: cloud/gcloud
+        gcloud:
+          params:
+            cmd: cloud/gcloud
         chamber:
           params:
             cmd: cloud/chamber
