@@ -22,57 +22,34 @@ config:
         params:
           variant_config_context:
           - gcp
-        environments:
-          dev:
-            params:
-              variant_config_context:
-              - dev
-            clusters:
-              main:
-                params:
-                  variant_config_context:
-                  - main
-              secondary:
-                params:
-                  variant_config_context:
-                  - secondary
-          prod:
-            params:
-              variant_config_context:
-              - dev
-            clusters:
-              main:
-                params:
-                  variant_config_context:
-                  - main
-              secondary:
-                params:
-                  variant_config_context:
-                  - secondary
 
-      aws:
-        params:
-          env:
-            AWS_ACCESS_KEY_ID:
-            AWS_SECRET_ACCESS_KEY:
-            AWS_SESSION_TOKEN:
-            AWS_SECURITY_TOKEN:
-          variant_config_context:
-          - aws
-        environments:
-          dev:
-            params:
-              variant_config_context:
-              - dev
-        environments:
-          prod:
-            params:
-              variant_config_context:
-              - prod
-        chamber:
+  environments:
+    dev:
+      cloud:
+        gcp:
+          clusters:
+            main:
+              params:
+                variant_config_context:
+                - main
+            secondary:
+              params:
+                variant_config_context:
+                - secondary
+
+        aws:
           params:
+            env:
+              AWS_ACCESS_KEY_ID:
+              AWS_SECRET_ACCESS_KEY:
+              AWS_SESSION_TOKEN:
+              AWS_SECURITY_TOKEN:
             variant_config_context:
-            - aws.chamber
+            - aws
+          chamber:
+            params:
+              variant_config_context:
+              - aws.chamber
 
 tools:
   gcloud/default:
