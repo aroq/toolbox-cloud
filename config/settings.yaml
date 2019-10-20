@@ -9,6 +9,9 @@ config:
         gcp:
           params:
             cmd: cloud/gcp
+        kubectl:
+          params:
+            cmd: cloud/kubectl
         chamber:
           params:
             cmd: cloud/chamber
