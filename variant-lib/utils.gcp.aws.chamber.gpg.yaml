@@ -1,0 +1,13 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+parameters:
+- name: cmd
+  type: string
+
+steps:
+- task: cloud.gcp.gcloud.aws-chamber-gpg-activate-account-from-git-secret.before
+- task: core.exec
+  arguments:
+    cmd: "{{ .cmd }}"
+- task: cloud.gcp.gcloud.aws-chamber-gpg-activate-account-from-git-secret.after

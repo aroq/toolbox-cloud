@@ -1,0 +1,5 @@
+{{ $gcp := (datasource "defines").cloud.gcp.prod -}}
+
+cloud:
+  gcp:
+{{ $gcp |data.ToYAML | strings.Indent 4 -}}

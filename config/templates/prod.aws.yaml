@@ -1,0 +1,5 @@
+{{ $aws := (datasource "defines").cloud.aws.prod -}}
+
+cloud:
+  aws:
+{{ $aws |data.ToYAML | strings.Indent 4 -}}

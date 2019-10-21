@@ -1,18 +1,6 @@
 #!/usr/bin/env variant
 # vi: ft=yaml
 
-parameters:
-- name: key_file
-  type: string
-
-steps:
-- task: gcloud_before
-- task: core.exec
-  arguments:
-    cmd: |
-      gcloud {{ .args | join " " }}
-- task: gcloud_after
-
 tasks:
   core:
     import: .toolbox/core/variant-lib/utils.yaml
@@ -22,18 +10,11 @@ tasks:
         import: .toolbox/tools/cloud/variant-lib/utils.aws.yaml
       gcp:
         import: .toolbox/tools/cloud/variant-lib/utils.gcp.yaml
-  # before:
-    # steps:
-    # - task: cloud.aws.chamber.read.to_file
-    # - task: core.gpg.import_key
-    # - task: core.git-secret.reveal
-      # arguments:
-        # secret_file: "{{ .key_file }}"
-    # - task: cloud.gcp.activate-service-account
+      gcp-exec:
+        import: .toolbox/tools/cloud/variant-lib/utils.gcp.aws.chamber.gpg.yaml
 
-  # after:
-    # steps:
-    # - task: core.git-secret.delete
-      # arguments:
-        # secret_file: "{{ .key_file }}"
+steps:
+- task: cloud.gcp-exec
+  arguments:
+    cmd: gcloud {{ .args | join " " }}
 

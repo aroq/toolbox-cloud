@@ -1,0 +1,6 @@
+{{ $cluster := (datasource "defines").cloud.gcp.dev.cluster.main -}}
+
+cloud:
+  gcp:
+    clusters:
+      CLOUDSDK_CONTAINER_CLUSTER: {{ $cluster.name }}

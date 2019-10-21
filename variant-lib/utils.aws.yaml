@@ -26,6 +26,29 @@ tasks:
     - script: |
         chamber {{ .args | join " " }}
     tasks:
+      gpg:
+        parameters:
+        - name: gpg_key_dir
+          type: string
+          default: /root/.secrets
+        - name: gpg_key_file
+          type: string
+          default: key.gpg
+        tasks:
+          before:
+            steps:
+            - task: cloud.aws.chamber.read.to_file
+              arguments:
+                dir: "{{ .gpg_key_dir }}"
+                file: "{{ .gpg_key_file }}"
+            - task: core.gpg.import_key
+              arguments:
+                gpg_key_file: "{{ .gpg_key_dir }}/{{ .gpg_key_file }}"
+          after:
+            steps:
+            - task: core.exec
+              arguments:
+                cmd: "rm -f {{ .gpg_key_dir }}/{{ .gpg_key_file }}"
       read:
         autoenv: true
         bindParamsFromEnv: true
@@ -44,15 +67,15 @@ tasks:
             autoenv: true
             bindParamsFromEnv: true
             parameters:
-            - name: dir_name
+            - name: dir
               type: string
-            - name: file_name
+            - name: file
               type: string
             steps:
             - task: core.exec
               arguments:
                 cmd: |
-                  mkdir -p {{ .dir_name }}
-                  chamber read {{ .service }} {{ .key }} -q > {{ .dir_name }}/{{ .file_name}}
+                  mkdir -p {{ .dir }}
+                  chamber read {{ .service }} {{ .key }} -q > {{ .dir }}/{{ .file }}
 
 

@@ -11,11 +11,54 @@ parameters:
 - name: CLOUDSDK_COMPUTE_ZONE
   type: string
 
-- name: key_file
-  type: string
-
 tasks:
+  activate-account-from-git-secret:
+    parameters:
+    - name: cloud_gcp_key_file
+      type: string
+    tasks:
+      before:
+        steps:
+        - task: core.git-secret.reveal
+          arguments:
+            secret_file: "{{ .cloud_gcp_key_file }}"
+        - task: cloud.gcp.activate-service-account
+          arguments:
+            key_file: "{{ .cloud_gcp_key_file }}"
+      after:
+        steps:
+        - task: core.git-secret.delete
+          arguments:
+            secret_file: "{{ .cloud_gcp_key_file }}"
+  gcloud:
+    tasks:
+      aws-chamber-gpg-activate-account-from-git-secret:
+        tasks:
+          # Initialization tasks (keys, secrets, etc)
+          before:
+            steps:
+            - task: cloud.aws.chamber.gpg.before
+            - task: cloud.gcp.activate-account-from-git-secret.before
+          # Finalization tasks (remove keys, secrets, etc)
+          after:
+            steps:
+            - task: cloud.gcp.activate-account-from-git-secret.after
+            - task: cloud.aws.chamber.gpg.after
+
+    parameters:
+    - name: cmd
+      type: string
+      default: ""
+    steps:
+    - task: core.exec
+      arguments:
+        cmd: |
+          gcloud {{ .cmd }}
+
   activate-service-account:
+    parameters:
+    - name: key_file
+      type: string
     autoenv: true
     steps:
     - task: core.exec
@@ -25,14 +68,16 @@ tasks:
           gcloud config set project {{ .CLOUDSDK_CORE_PROJECT }}
           gcloud auth activate-service-account --key-file={{ .key_file }}
 
-  get-credentials:
+  clusters:
     parameters:
     - name: CLOUDSDK_CONTAINER_CLUSTER
       type: string
     autoenv: true
-    steps:
-    - task: core.exec
-      arguments:
-        title: "Google Cloud :: Cluster :: Get credentials"
-        cmd: |
-          gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
+    tasks:
+      get-credentials:
+        steps:
+        - task: cloud.gcp-exec
+          arguments:
+            title: "Google Cloud :: Cluster :: Get credentials"
+            cmd: |
+              gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
