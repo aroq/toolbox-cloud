@@ -66,6 +66,7 @@ tools:
   gcp:
     from:
     - config.libraries.cloud.commands.gcp
+    - config.profiles.cloud.aws
   chamber:
     from:
     - config.libraries.cloud.commands.chamber
