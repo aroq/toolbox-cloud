@@ -9,6 +9,8 @@ config:
         gcp:
           params:
             cmd: cloud/gcp
+            variant_config_context:
+            - gcp
         kubectl:
           params:
             cmd: cloud/kubectl
@@ -34,9 +36,6 @@ config:
     dev: &env
       cloud:
         gcp:
-          params:
-            variant_config_context:
-            - gcp
           clusters:
             main:
               params:
@@ -46,19 +45,6 @@ config:
               params:
                 variant_config_context:
                 - secondary
-        aws:
-          params:
-            env:
-              AWS_ACCESS_KEY_ID:
-              AWS_SECRET_ACCESS_KEY:
-              AWS_SESSION_TOKEN:
-              AWS_SECURITY_TOKEN:
-            variant_config_context:
-            - aws
-          chamber:
-            params:
-              variant_config_context:
-              - aws.chamber
     prod:
       <<: *env
 
@@ -67,6 +53,7 @@ tools:
     from:
     - config.libraries.cloud.commands.gcp
     - config.profiles.cloud.aws
+    - config.profiles.cloud.gcp
   chamber:
     from:
     - config.libraries.cloud.commands.chamber
