@@ -58,7 +58,7 @@ tools:
   chamber:
     from:
     - config.libraries.cloud.commands.chamber
-  terraform:
+  terraform/terraform:
     from: config.libraries.cloud.commands.terraform
 
 
