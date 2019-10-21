@@ -63,7 +63,7 @@ config:
       <<: *env
 
 tools:
-  gcp/gcp:
+  gcp:
     from:
     - config.libraries.cloud.commands.gcp
   chamber:
