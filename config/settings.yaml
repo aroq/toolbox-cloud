@@ -60,7 +60,7 @@ tools:
     - config.profiles.cloud.aws
   cluster:
     from:
-    - config.libraries.cloud.commands.cluster
+    - config.libraries.cloud.commands.gcp.cluster
     - config.profiles.cloud.aws
   chamber:
     from:
