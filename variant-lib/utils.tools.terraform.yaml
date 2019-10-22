@@ -1,0 +1,73 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+bindParamsFromEnv: true
+autoenv: true
+
+parameters:
+# - name: AWS_ACCESS_KEY_ID
+  # type: string
+# - name: AWS_SECRET_ACCESS_KEY
+  # type: string
+- name: AWS_DEFAULT_REGION
+  type: string
+# - name: AWS_SESSION_TOKEN
+  # type: string
+  # default: ""
+# - name: AWS_SECURITY_TOKEN
+  # type: string
+  # default: ""
+- name: dir
+  type: string
+
+tasks:
+  exec:
+    bindParamsFromEnv: true
+    autoenv: true
+    parameters:
+    - name: cmd
+      type: string
+    steps:
+    - task: core.exec
+      arguments:
+        cmd: |
+          cd {{ .dir }}
+          {{ .cmd }}
+
+  initialize:
+    autoenv: true
+    steps:
+    - task: core.exec
+      arguments:
+        cmd: |
+          cd {{ .dir }}
+          echo "yes" | TF_INPUT="true" terraform init
+  plan:
+    autoenv: true
+    steps:
+    - task: cloud.tools.terraform.initialize
+    - task: core.exec
+      arguments:
+        cmd: |
+          cd {{ .dir }}
+          terraform plan
+  apply:
+    autoenv: true
+    steps:
+    - task: core.exec
+      arguments:
+        cmd: |
+          cd {{ .dir }}
+          terraform apply -input=false -auto-approve
+
+  output:
+    parameters:
+    - name: output_name
+      type: string
+    autoenv: true
+    steps:
+    - task: core.exec
+      arguments:
+        cmd: |
+          terraform output {{ .output_name }}
+
