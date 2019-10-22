@@ -11,6 +11,11 @@ config:
             cmd: cloud/gcp
             variant_config_context:
             - gcp
+          cluster:
+            params:
+              cmd: cloud/cluster
+              variant_config_context:
+              - cluster
         kubectl:
           params:
             cmd: cloud/kubectl
