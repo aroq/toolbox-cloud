@@ -58,6 +58,10 @@ tools:
     from:
     - config.libraries.cloud.commands.gcp
     - config.profiles.cloud.aws
+  kubectl:
+    from:
+    - config.libraries.cloud.commands.kubectl
+    - config.profiles.cloud.aws
   cluster:
     from:
     - config.libraries.cloud.commands.gcp.cluster
