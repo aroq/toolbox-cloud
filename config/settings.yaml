@@ -16,9 +16,9 @@ config:
               cmd: cloud/cluster
               variant_config_context:
               - cluster
-        kubectl:
-          params:
-            cmd: cloud/kubectl
+          kubectl:
+            params:
+              cmd: cloud/kubectl
         chamber:
           params:
             cmd: cloud/chamber
@@ -60,7 +60,7 @@ tools:
     - config.profiles.cloud.aws
   kubectl:
     from:
-    - config.libraries.cloud.commands.kubectl
+    - config.libraries.cloud.commands.gcp.kubectl
     - config.profiles.cloud.aws
   cluster:
     from:
