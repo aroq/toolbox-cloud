@@ -1,0 +1,20 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+# bindParamsFromEnv: true
+# autoenv: true
+
+parameters:
+- name: namespace
+  type: string
+  default: default
+
+tasks:
+  exec:
+    parameters:
+    - name: cmd
+      type: string
+    steps:
+    - task: core.exec
+      arguments:
+        cmd: kubectl --namespace={{ .namespace }} {{ .cmd }}

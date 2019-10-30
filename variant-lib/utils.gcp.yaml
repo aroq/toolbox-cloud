@@ -11,6 +11,13 @@ parameters:
 - name: CLOUDSDK_COMPUTE_ZONE
   type: string
 
+- name: GOOGLE_APPLICATION_CREDENTIALS
+  type: string
+
+- name: CLOUDSDK_CONTAINER_CLUSTER
+  type: string
+  default: ""
+
 tasks:
   activate-account-from-git-secret:
     parameters:
@@ -69,9 +76,6 @@ tasks:
           gcloud auth activate-service-account --key-file={{ .key_file }}
 
   clusters:
-    parameters:
-    - name: CLOUDSDK_CONTAINER_CLUSTER
-      type: string
     autoenv: true
     tasks:
       get-credentials:
@@ -81,3 +85,4 @@ tasks:
             title: "Google Cloud :: Cluster :: Get credentials"
             cmd: |
               gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
+

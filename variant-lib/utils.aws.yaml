@@ -77,5 +77,3 @@ tasks:
                 cmd: |
                   mkdir -p {{ .dir }}
                   chamber read {{ .service }} {{ .key }} -q > {{ .dir }}/{{ .file }}
-
-

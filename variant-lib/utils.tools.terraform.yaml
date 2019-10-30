@@ -17,7 +17,7 @@ parameters:
 # - name: AWS_SECURITY_TOKEN
   # type: string
   # default: ""
-- name: dir
+- name: terraform_dir
   type: string
 
 tasks:
@@ -31,25 +31,28 @@ tasks:
     - task: core.exec
       arguments:
         cmd: |
-          cd {{ .dir }}
+          cd {{ .terraform_dir }}
           {{ .cmd }}
 
   initialize:
+    parameters:
+    - name: backend_config_file
+      type: string
+      default: backend.hcl
     autoenv: true
     steps:
     - task: core.exec
       arguments:
         cmd: |
-          cd {{ .dir }}
-          echo "yes" | TF_INPUT="true" terraform init
+          cd {{ .terraform_dir }}
+          echo "yes" | TF_INPUT="true" terraform init -backend-config={{ .backend_config_file }}
   plan:
     autoenv: true
     steps:
-    - task: cloud.tools.terraform.initialize
     - task: core.exec
       arguments:
         cmd: |
-          cd {{ .dir }}
+          cd {{ .terraform_dir }}
           terraform plan
   apply:
     autoenv: true
@@ -57,8 +60,17 @@ tasks:
     - task: core.exec
       arguments:
         cmd: |
-          cd {{ .dir }}
+          cd {{ .terraform_dir }}
           terraform apply -input=false -auto-approve
+
+  destroy:
+    autoenv: true
+    steps:
+    - task: core.exec
+      arguments:
+        cmd: |
+          cd {{ .terraform_dir }}
+          terraform destroy -input=false -auto-approve
 
   output:
     parameters:
@@ -69,5 +81,7 @@ tasks:
     - task: core.exec
       arguments:
         cmd: |
+          cd {{ .terraform_dir }}
           terraform output {{ .output_name }}
+
 

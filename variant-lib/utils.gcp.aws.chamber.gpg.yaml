@@ -4,10 +4,20 @@
 parameters:
 - name: cmd
   type: string
+  default: ""
 
 steps:
-- task: cloud.gcp.gcloud.aws-chamber-gpg-activate-account-from-git-secret.before
+- task: cloud.gcp-exec.before
 - task: core.exec
   arguments:
     cmd: "{{ .cmd }}"
-- task: cloud.gcp.gcloud.aws-chamber-gpg-activate-account-from-git-secret.after
+- task: cloud.gcp-exec.after
+
+tasks:
+  before:
+    steps:
+    - task: cloud.gcp.gcloud.aws-chamber-gpg-activate-account-from-git-secret.before
+  after:
+    steps:
+    - task: cloud.gcp.gcloud.aws-chamber-gpg-activate-account-from-git-secret.after
+
