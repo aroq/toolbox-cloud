@@ -17,4 +17,3 @@ steps:
 - task: cloud.tools.terraform.exec
   arguments:
     cmd: terraform {{ .args | join " " }}
-

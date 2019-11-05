@@ -17,4 +17,3 @@ steps:
 - task: cloud.gcp-exec
   arguments:
     cmd: gcloud {{ .args | join " " }}
-

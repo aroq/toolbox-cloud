@@ -50,4 +50,3 @@ tasks:
           arguments:
             cmd: |
               chamber read {{ .service }} {{ .key }} -q > {{ .filename }}
-
