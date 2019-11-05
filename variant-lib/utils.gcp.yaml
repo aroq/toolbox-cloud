@@ -85,4 +85,3 @@ tasks:
             title: "Google Cloud :: Cluster :: Get credentials"
             cmd: |
               gcloud container clusters get-credentials {{ .CLOUDSDK_CONTAINER_CLUSTER }}
-

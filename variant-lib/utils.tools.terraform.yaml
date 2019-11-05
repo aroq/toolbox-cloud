@@ -73,6 +73,3 @@ tasks:
         cmd: |
           cd {{ .terraform_dir }}
           terraform output {{ .output_name }}
-
-
-

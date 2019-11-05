@@ -20,4 +20,3 @@ tasks:
   after:
     steps:
     - task: cloud.gcp.gcloud.aws-chamber-gpg-activate-account-from-git-secret.after
-
