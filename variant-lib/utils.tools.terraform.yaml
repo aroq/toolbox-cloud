@@ -5,18 +5,8 @@ bindParamsFromEnv: true
 autoenv: true
 
 parameters:
-# - name: AWS_ACCESS_KEY_ID
-  # type: string
-# - name: AWS_SECRET_ACCESS_KEY
-  # type: string
 - name: AWS_DEFAULT_REGION
   type: string
-# - name: AWS_SESSION_TOKEN
-  # type: string
-  # default: ""
-# - name: AWS_SECURITY_TOKEN
-  # type: string
-  # default: ""
 - name: terraform_dir
   type: string
 
@@ -70,7 +60,7 @@ tasks:
       arguments:
         cmd: |
           cd {{ .terraform_dir }}
-          terraform destroy -input=false -auto-approve
+          terraform destroy
 
   output:
     parameters:
@@ -83,5 +73,6 @@ tasks:
         cmd: |
           cd {{ .terraform_dir }}
           terraform output {{ .output_name }}
+
 
 
