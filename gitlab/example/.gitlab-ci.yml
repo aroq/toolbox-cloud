@@ -1,7 +1,6 @@
 include:
   - .toolbox/tools/cloud/gitlab/cluster.blue-green.yaml
   - .toolbox/tools/cloud/gitlab/environments/dev.yaml
-  - .toolbox/tools/cloud/gitlab/environments/prod.yaml
 
 dev-blue-plan:
   extends:
@@ -14,3 +13,4 @@ dev-green-plan:
     - .env.dev
     - .cluster.green
     - .action.plan
+

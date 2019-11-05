@@ -1,0 +1,10 @@
+include: .toolbox/tools/cloud/gitlab/toolbox-cloud.yaml
+
+stages:
+  - plan
+
+.action.plan:
+  extends: .core
+  stage: plan
+  script:
+    - make ${ENV}/${CLUSTER}/plan
