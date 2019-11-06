@@ -9,12 +9,12 @@ config:
         gcp:
           params:
             cmd: cloud/gcp
-            variant_config_context:
+            config_context_prefix:
             - gcp
           cluster:
             params:
               cmd: cloud/cluster
-              variant_config_context:
+              config_context_prefix:
               - cluster
           kubectl:
             params:
@@ -34,24 +34,30 @@ config:
             AWS_SECRET_ACCESS_KEY:
             AWS_SESSION_TOKEN:
             AWS_SECURITY_TOKEN:
-          variant_config_context:
+          config_context_prefix:
           - aws
 
   environments:
     dev: &env
+      params:
+        config_context_prefix:
+        - dev
       cloud:
         gcp:
           clusters:
             main:
               params:
-                variant_config_context:
+                config_context_prefix:
                 - main
             secondary:
               params:
-                variant_config_context:
+                config_context_prefix:
                 - secondary
     prod:
       <<: *env
+      params:
+        config_context_prefix:
+        - prod
 
 tools:
   gcp:
