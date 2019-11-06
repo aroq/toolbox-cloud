@@ -39,9 +39,6 @@ config:
 
   environments:
     dev: &env
-      params:
-        config_context_prefix:
-        - dev
       cloud:
         gcp:
           clusters:
@@ -55,9 +52,6 @@ config:
                 - secondary
     prod:
       <<: *env
-      params:
-        config_context_prefix:
-        - prod
 
 tools:
   gcp:
