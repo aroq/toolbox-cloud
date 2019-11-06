@@ -5,6 +5,8 @@ config:
         destination: cloud
         source: github.com/aroq/toolbox-cloud
         image: aroq/toolbox-cloud
+        config_context_prefix:
+        - cloud
       commands:
         gcp:
           params:
