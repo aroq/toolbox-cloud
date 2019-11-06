@@ -7,4 +7,4 @@ stages:
   extends: .core
   stage: plan
   script:
-    - make ${ENV}/${CLUSTER}/plan
+    - toolbox/bin/cluster/${ENV}/${CLUSTER} plan
