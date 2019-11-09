@@ -1,0 +1,19 @@
+params:
+  jobs:
+    params:
+      stage: main
+      script:
+        - ${CMD}
+    cloud:
+      params:
+        image: aroq/toolbox-cloud
+  job_params:
+    branches:
+      develop:
+        params:
+          only:
+            - develop
+      master:
+        params:
+          only:
+            - master

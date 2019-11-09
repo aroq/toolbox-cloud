@@ -1,0 +1,27 @@
+include:
+  - .toolbox/tools/cloud/gitlab/toolbox-cloud.yaml
+  - toolbox/gitlab/jobs.yaml
+
+stages:
+  - plan
+
+.core:
+  image: aroq/toolbox-cloud
+  tags:
+    - docker-privileged
+
+dev-blue-plan:
+  extends: .core
+  stage: plan
+  script:
+    - toolbox/bin/cluster/dev/blue plan
+  only:
+    - develop
+
+dev-green-plan:
+  extends: .core
+  stage: plan
+  script:
+    - toolbox/bin/cluster/dev/green plan
+  only:
+    - master

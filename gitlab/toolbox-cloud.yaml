@@ -1,4 +1,0 @@
-.core:
-  image: aroq/toolbox-cloud
-  tags:
-    - docker-privileged

@@ -1,5 +1,0 @@
-.cluster.green:
-  variables:
-    CLUSTER: green
-
-

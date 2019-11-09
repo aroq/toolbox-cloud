@@ -1,0 +1,34 @@
+params:
+  jobs:
+    cloud:
+      params:
+        context:
+          logRotatorNumToKeep: 20
+        pipeline:
+          pods:
+          - name: default
+            unipipe_retrieve_config: true
+            containerized: true
+            secretEnvVars:
+            - name: AWS_ACCESS_KEY_ID
+              secret_name: aws-secrets-chamber
+              secret_key: aws_access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              secret_name: aws-secrets-chamber
+              secret_key: aws_secret_access_key
+            containers:
+            - name: cluster
+              image: aroq/toolbox-cloud
+              execute: true
+              k8s:
+                ttyEnabled: true
+                command: cat
+                resourceRequestCpu: 1000m
+                resourceLimitCpu: 4000m
+                resourceRequestMemory: 2000Mi
+                resourceLimitMemory: 4000Mi
+                alwaysPullImage: true
+              actions:
+              - fromAction: .params.actions.Commands.default.execute
+                actions:
+                - ${context.env.CMD}

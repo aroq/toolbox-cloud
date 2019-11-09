@@ -1,5 +1,0 @@
-include:
-  - .toolbox/tools/cloud/gitlab/cluster.yaml
-  - .toolbox/tools/cloud/gitlab/clusters/blue.yaml
-  - .toolbox/tools/cloud/gitlab/clusters/green.yaml
-

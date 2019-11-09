@@ -1,5 +1,0 @@
-.env.prod:
-  variables:
-    ENV: prod
-  only:
-    - master

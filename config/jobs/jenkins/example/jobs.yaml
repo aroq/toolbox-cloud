@@ -1,0 +1,33 @@
+from:
+- /.toolbox/tools/cloud/jenkins/params.jobs.yaml
+
+# Jobs definitions.
+jobs:
+  dev:
+    jobs:
+      blue:
+        jobs:
+          plan:
+            from: params.jobs.cluster|override
+            parameters:
+              CMD: toolbox/bin/cluster/dev/blue plan
+      green:
+        jobs:
+          plan:
+            from: params.jobs.cluster|override
+            parameters:
+              CMD: toolbox/bin/cluster/dev/green plan
+  prod:
+    jobs:
+      blue:
+        jobs:
+          plan:
+            from: params.jobs.cluster|override
+            parameters:
+              CMD: toolbox/bin/cluster/prod/blue plan
+      green:
+        jobs:
+          plan:
+            from: params.jobs.cluster|override
+            parameters:
+              CMD: toolbox/bin/cluster/prod/green plan
