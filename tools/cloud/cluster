@@ -1,0 +1,63 @@
+#!/usr/bin/env variant
+# vi: ft=yaml
+
+tasks:
+  core:
+    import: .toolbox/core/variant-lib/utils.yaml
+  cloud:
+    tasks:
+      aws:
+        import: .toolbox/tools/cloud/variant-lib/utils.aws.yaml
+      gcp:
+        import: .toolbox/tools/cloud/variant-lib/utils.gcp.yaml
+      gcp-exec:
+        import: .toolbox/tools/cloud/variant-lib/utils.gcp.aws.chamber.gpg.yaml
+  tools:
+    tasks:
+      terraform:
+        import: .toolbox/tools/cloud/variant-lib/utils.tools.terraform.yaml
+      kubectl:
+        import: .toolbox/tools/cloud/variant-lib/utils.tools.kubectl.yaml
+
+  terraform:
+    steps:
+    - task: cloud.gcp-exec.before
+    - task: tools.terraform.exec
+      arguments:
+        cmd: terraform {{ .args | join " " }}
+    - task: cloud.gcp-exec.after
+
+  initialize:
+    steps:
+    - task: cloud.gcp-exec.before
+    - task: tools.terraform.initialize
+    - task: cloud.gcp-exec.after
+
+  plan:
+    steps:
+    - task: cloud.gcp-exec.before
+    - task: tools.terraform.initialize
+    - task: tools.terraform.plan
+    - task: cloud.gcp-exec.after
+
+  apply:
+    steps:
+    - task: cloud.gcp-exec.before
+    - task: tools.terraform.initialize
+    - task: tools.terraform.apply
+    - task: cloud.gcp-exec.after
+
+  destroy:
+    steps:
+    - task: cloud.gcp-exec.before
+    - task: tools.terraform.initialize
+    - task: tools.terraform.destroy
+    - task: cloud.gcp-exec.after
+
+  kubectl:
+    steps:
+    - task: cloud.gcp.clusters.get-credentials
+    - task: core.exec
+      arguments:
+        cmd: kubectl {{ .args | join " " }}
+    - task: cloud.gcp-exec.after
