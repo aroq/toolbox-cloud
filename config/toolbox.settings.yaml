@@ -18,6 +18,10 @@ config:
               cmd: cloud/cluster
               config_context_prefix:
               - cluster
+            aws:
+              gpg:
+                params:
+                  cmd: cluster.gcp.aws.gpg
           kubectl:
             params:
               cmd: cloud/kubectl
