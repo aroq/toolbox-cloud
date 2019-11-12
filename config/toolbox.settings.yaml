@@ -21,7 +21,7 @@ config:
             aws:
               gpg:
                 params:
-                  cmd: cluster.gcp.aws.gpg
+                  cmd: cluster_gcp_aws_gpg
           kubectl:
             params:
               cmd: cloud/kubectl
