@@ -1,5 +1,8 @@
 config:
   libraries:
+    params:
+      tool_dirs:
+      - toolbox/.toolbox/deps/toolbox-cloud
     cloud:
       params:
         destination: cloud
@@ -7,8 +10,6 @@ config:
         image: aroq/toolbox-cloud
         config_context_prefix:
         - cloud
-        tool_dirs:
-        - toolbox/.toolbox/deps/toolbox-cloud
       commands:
         gcp:
           params:
