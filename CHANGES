@@ -1,0 +1,99 @@
+Version 0.1.0
+ - Add tool_dirs param
+ - Add tool_dirs param
+ - Rename cluster task
+ - Rename cluster task
+ - Update include paths
+ - Fix include paths
+ - Move tools to tools dir
+ - Add cluster command options
+ - Add cluster command options
+ - Rename toolbox settings config file
+ - Add tools
+ - Update gitlab & jenkins jobs
+ - Add 'cloud' config context
+ - Change variant_config_context to context_context_prefix
+ - Change variant_config_context to context_context_prefix
+ - Update gitlab job
+ - Remove default cluster task
+ - Format code
+ - Add gitlab jobs
+ - Add gitlab jobs
+ - Update terraform destroy cmd
+ - Update utils
+ - Update kubectl tool
+ - Add kubectl tool
+ - Update settings
+ - Update settings
+ - Add cluster command
+ - Add terraform utils
+ - Update terraform command
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update gcp path
+ - Update aws profile
+ - Update aws profile
+ - Update aws profile
+ - Add aws profile
+ - Update terraform tool key
+ - Update toolbox
+ - Update dockerfile
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update kubectl installation
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update settings
+ - Update settings
+ - Add aws.chamber profile
+ - Update gcloud task
+ - Update gcloud task
+ - Rename common gcloud/gcloud cmd to gcloud/default
+ - Update default gcloud command path
+ - Remove commented strings
+ - Add gcp utils back
+ - Update gcloud task
+ - Remove chamber task arguments
+ - Update gcloud task
+ - Update gcloud task
+ - Update gcloud task
+ - Remove AWS_DEFAULT_REGION from aws profile variant context
+ - Add aws provide for gloud
+ - Update config
+ - Update chamber task
+ - Update variant-lib utils
+ - Update variant-utils
+ - Update path to variant-lib
+ - Add variant-lib utils
+ - Update config
+ - Add terraform & chamber tools
+ - Change terraform version to 0.12.10
+ - Change terraform versio to 0.11.14
+ - Change gcp to cloud
+ - Add aws-vault
+ - Add terraform, chamber
+ - Trigger
+ - Move gpg & git-secret tasks to toolbox utils
+ - Refactor gcloud tasks
+ - Add quotes for tasks titles
+ - Add titles to tasks
+ - Add exec command
+ - Change gcloud to gcp destination
+ - Change name to destination
+ - Rename tools to libraries
+ - Rename tools to libraries
+ - Trigger
+ - Rename tools to libraries
+ - add gcloud tool
+ - Install kubectl
+ - Trigger
+ - Trigger
+ - Initial commit
+
