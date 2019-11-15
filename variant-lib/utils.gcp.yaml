@@ -14,7 +14,7 @@ parameters:
 - name: GOOGLE_APPLICATION_CREDENTIALS
   type: string
 
-- name: CLOUDSDK_CONTAINER_CLUSTER
+- name: cloud.gcp.CLOUDSDK_CONTAINER_CLUSTER
   type: string
   default: ""
 
