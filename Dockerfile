@@ -1,17 +1,16 @@
+# Define arguments & default values
 ARG TERRAFORM_VERSION=0.12.10
 ARG GCLOUD_VERSION=266.0.0-alpine
 ARG CHAMBER_VERSION=2.7.2
 ARG CLOUDPOSSE_GEODESIC_VERSION=0.123.0
-ARG KUBECTL_VERSION=v1.16.2
 
 FROM google/cloud-sdk:$GCLOUD_VERSION as google-cloud-sdk
 FROM hashicorp/terraform:$TERRAFORM_VERSION as terraform
 FROM segment/chamber:$CHAMBER_VERSION as chamber
-FROM lachlanevenson/k8s-kubectl:$KUBECTL_VERSION as kubectl
 
+# Builder stage
 FROM golang:1-alpine as builder
 ARG KUBE_PROMPT_VERSION=v1.0.9
-
 COPY Dockerfile.packages.builder.txt /etc/apk/packages.txt
 RUN apk add --no-cache --update $(grep -v '^#' /etc/apk/packages.txt)
 
@@ -20,6 +19,7 @@ RUN git clone --depth 1 --single-branch -b $KUBE_PROMPT_VERSION https://github.c
   GO111MODULE=on go build . && \
   cp kube-prompt /usr/bin
 
+# Main stage
 FROM aroq/toolbox
 
 COPY Dockerfile.packages.txt /etc/apk/packages.txt
@@ -34,13 +34,21 @@ RUN ln -s /usr/local/google-cloud-sdk/bin/gcloud /usr/local/bin/ && \
     gcloud config set component_manager/disable_update_check true --installation && \
     gcloud config set metrics/environment github_docker_image --installation
 
-COPY --from=kubectl /usr/local/bin/kubectl /usr/local/bin/kubectl
 COPY --from=terraform /bin/terraform /usr/bin
 COPY --from=chamber /chamber /usr/bin
 COPY --from=builder /usr/bin/kube-prompt /usr/bin
 
 COPY Dockerfile.pip.requirements.txt /Dockerfile.pip.requirements.txt
 RUN pip install -r /Dockerfile.pip.requirements.txt
+
+# Install kubectl
+ARG KUBECTL_VERSION=v1.16.2
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl && \
+    chmod +x ./kubectl && \
+    mv ./kubectl /usr/local/bin/kubectl && \
+    mkdir -p ~/completions && \
+    kubectl completion bash > ~/completions/kubectl.bash && \
+    echo "source ~/completions/kubectl.bash" >> ~/.bashrc
 
 # Install kube-ps1
 ENV KUBE_PS1_VERSION 0.7.0
@@ -57,13 +65,13 @@ RUN curl -L https://github.com/jonmosco/kube-ps1/archive/v${KUBE_PS1_VERSION}.ta
 # Setup kubectl aliases
 RUN rm -fr /tmp/install-utils && \
     echo "alias k=kubectl" >> ~/.bashrc && \
+    echo "alias kns=kubens" >> ~/.bashrc && \
     echo "complete -o default -F __start_kubectl k" >> ~/.bashrc
 
 # Install kubectx/kubens
 ENV KUBECTX_VERSION 0.7.1
 RUN curl -L https://github.com/ahmetb/kubectx/archive/v$KUBECTX_VERSION.tar.gz | \
     tar xz && \
-    mkdir -p ~/completions && \
     cd ./kubectx-$KUBECTX_VERSION && \
     mv kubectx kubens /usr/local/bin/ && \
     chmod +x /usr/local/bin/kubectx && \
