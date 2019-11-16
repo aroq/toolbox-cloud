@@ -10,6 +10,8 @@ FROM segment/chamber:$CHAMBER_VERSION as chamber
 
 # Builder stage
 FROM golang:1-alpine as builder
+
+# Define arguments & default values for builder stage
 ARG KUBE_PROMPT_VERSION=v1.0.9
 COPY Dockerfile.packages.builder.txt /etc/apk/packages.txt
 RUN apk add --no-cache --update $(grep -v '^#' /etc/apk/packages.txt)
@@ -21,6 +23,11 @@ RUN git clone --depth 1 --single-branch -b $KUBE_PROMPT_VERSION https://github.c
 
 # Main stage
 FROM aroq/toolbox
+
+# Define arguments & default values for main stage
+ARG KUBECTL_VERSION=v1.16.2
+ENV KUBE_PS1_VERSION 0.7.0
+ENV KUBECTX_VERSION 0.7.1
 
 COPY Dockerfile.packages.txt /etc/apk/packages.txt
 RUN apk add --no-cache --update $(grep -v '^#' /etc/apk/packages.txt)
@@ -42,34 +49,31 @@ COPY Dockerfile.pip.requirements.txt /Dockerfile.pip.requirements.txt
 RUN pip install -r /Dockerfile.pip.requirements.txt
 
 # Install kubectl
-ARG KUBECTL_VERSION=v1.16.2
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
     mv ./kubectl /usr/local/bin/kubectl && \
     mkdir -p ~/completions && \
     kubectl completion bash > ~/completions/kubectl.bash && \
-    echo "source ~/completions/kubectl.bash" >> ~/.bashrc
+    echo "source ~/completions/kubectl.bash" >> /etc/profile
 
 # Install kube-ps1
-ENV KUBE_PS1_VERSION 0.7.0
 COPY k8s-cli-ps1.sh /root/k8s-prompt/
 RUN curl -L https://github.com/jonmosco/kube-ps1/archive/v${KUBE_PS1_VERSION}.tar.gz | tar xz && \
     cd ./kube-ps1-${KUBE_PS1_VERSION} && \
     mv kube-ps1.sh ~/k8s-prompt/ && \
     chmod +x ~/k8s-prompt/*.sh && \
     rm -fr ./kube-ps1-${KUBE_PS1_VERSION} && \
-    echo "source ~/k8s-prompt/kube-ps1.sh" >> ~/.bashrc && \
-    echo "source ~/k8s-prompt/k8s-cli-ps1.sh" >> ~/.bashrc && \
-    echo "PROMPT_COMMAND=\"_kube_ps1_update_cache && k8s_cli_ps1\"" >> ~/.bashrc
+    echo "source ~/k8s-prompt/kube-ps1.sh" >> /etc/profile && \
+    echo "source ~/k8s-prompt/k8s-cli-ps1.sh" >> /etc/profile && \
+    echo "PROMPT_COMMAND=\"_kube_ps1_update_cache && k8s_cli_ps1\"" >> /etc/profile
 
 # Setup kubectl aliases
 RUN rm -fr /tmp/install-utils && \
-    echo "alias k=kubectl" >> ~/.bashrc && \
-    echo "alias kns=kubens" >> ~/.bashrc && \
-    echo "complete -o default -F __start_kubectl k" >> ~/.bashrc
+    echo "alias k=kubectl" >> /etc/profile && \
+    echo "alias kns=kubens" >> /etc/profile && \
+    echo "complete -o default -F __start_kubectl k" >> /etc/profile
 
 # Install kubectx/kubens
-ENV KUBECTX_VERSION 0.7.1
 RUN curl -L https://github.com/ahmetb/kubectx/archive/v$KUBECTX_VERSION.tar.gz | \
     tar xz && \
     cd ./kubectx-$KUBECTX_VERSION && \
@@ -78,7 +82,7 @@ RUN curl -L https://github.com/ahmetb/kubectx/archive/v$KUBECTX_VERSION.tar.gz |
     chmod +x /usr/local/bin/kubens && \
     cp completion/kubectx.bash ~/completions/ && \
     cp completion/kubens.bash  ~/completions/ && \
-    echo "source ~/completions/kubectx.bash" >> ~/.bashrc && \
-    echo "source ~/completions/kubens.bash" >> ~/.bashrc && \
+    echo "source ~/completions/kubectx.bash" >> /etc/profile && \
+    echo "source ~/completions/kubens.bash" >> /etc/profile && \
     cd ../ && \
     rm -fr ./kubectx-$KUBECTX_VERSION

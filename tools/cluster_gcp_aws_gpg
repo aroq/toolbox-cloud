@@ -61,3 +61,17 @@ tasks:
       arguments:
         cmd: kubectl {{ .args | join " " }}
     - task: cloud.gcp-exec.after
+
+  shell:
+    steps:
+    - task: cloud.gcp.clusters.get-credentials
+    - task: core.exec
+      arguments:
+        cmd: bash -l
+
+  kube-prompt:
+    steps:
+    - task: cloud.gcp.clusters.get-credentials
+    - task: core.exec
+      arguments:
+        cmd: kube-prompt
