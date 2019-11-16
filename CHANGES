@@ -1,3 +1,25 @@
+Version 0.1.1:
+ - Fixed conflict
+ - Refactor Dockerfile & add shell & kube-prompt commands for cluster
+ - Add bash-completion
+ - Change kubectl install procedure
+ - Add dockerfile packages file for builder
+ - Add kubens & kubectx
+ - Update dockerfile
+ - Add kube-prompt and kube-ps1 to Docker image
+ - Update get-credentials task
+ - Update CLOUDSDK_CONTAINER_CLUSTER param
+ - Add tool_dirs param
+ - Add tool_dirs param
+ - Rename cluster task
+ - Rename cluster task
+ - Update include paths
+ - Fix include paths
+ - Move tools to tools dir
+ - Add cluster command options
+ - Add cluster command options
+ - Rename toolbox settings config file
+
 Version 0.1.0
  - Add tool_dirs param
  - Add tool_dirs param
