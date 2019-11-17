@@ -75,3 +75,10 @@ tasks:
     - task: core.exec
       arguments:
         cmd: kube-prompt
+
+  k9s:
+    steps:
+    - task: cloud.gcp.clusters.get-credentials
+    - task: core.exec
+      arguments:
+        cmd: k9s

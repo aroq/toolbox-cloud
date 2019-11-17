@@ -26,8 +26,9 @@ FROM aroq/toolbox
 
 # Define arguments & default values for main stage
 ARG KUBECTL_VERSION=v1.16.2
-ENV KUBE_PS1_VERSION 0.7.0
-ENV KUBECTX_VERSION 0.7.1
+ARG KUBE_PS1_VERSION=0.7.0
+ARG KUBECTX_VERSION=0.7.1
+ARG K9S_VERSION=0.9.3
 
 COPY Dockerfile.packages.txt /etc/apk/packages.txt
 RUN apk add --no-cache --update $(grep -v '^#' /etc/apk/packages.txt)
@@ -57,15 +58,12 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_
     echo "source ~/completions/kubectl.bash" >> /etc/profile
 
 # Install kube-ps1
-COPY k8s-cli-ps1.sh /root/k8s-prompt/
 RUN curl -L https://github.com/jonmosco/kube-ps1/archive/v${KUBE_PS1_VERSION}.tar.gz | tar xz && \
-    cd ./kube-ps1-${KUBE_PS1_VERSION} && \
-    mv kube-ps1.sh ~/k8s-prompt/ && \
-    chmod +x ~/k8s-prompt/*.sh && \
-    rm -fr ./kube-ps1-${KUBE_PS1_VERSION} && \
+    mkdir -p ~/k8s-prompt && \
+    cp -fR ./kube-ps1-${KUBE_PS1_VERSION}/* ~/k8s-prompt/ && \
+    rm -fr ../kube-ps1-${KUBE_PS1_VERSION} && \
     echo "source ~/k8s-prompt/kube-ps1.sh" >> /etc/profile && \
-    echo "source ~/k8s-prompt/k8s-cli-ps1.sh" >> /etc/profile && \
-    echo "PROMPT_COMMAND=\"_kube_ps1_update_cache && k8s_cli_ps1\"" >> /etc/profile
+    echo "export PS1='\W \$(kube_ps1)\n> '" >> /etc/profile
 
 # Setup kubectl aliases
 RUN rm -fr /tmp/install-utils && \
@@ -86,3 +84,10 @@ RUN curl -L https://github.com/ahmetb/kubectx/archive/v$KUBECTX_VERSION.tar.gz |
     echo "source ~/completions/kubens.bash" >> /etc/profile && \
     cd ../ && \
     rm -fr ./kubectx-$KUBECTX_VERSION
+
+# Install k9s
+RUN mkdir -p k9s && \
+    curl -L https://github.com/derailed/k9s/releases/download/${K9S_VERSION}/k9s_${K9S_VERSION}_Linux_x86_64.tar.gz | \
+    tar xz -C k9s && \
+    mv k9s/k9s /usr/local/bin && \
+    rm -fR k9s
